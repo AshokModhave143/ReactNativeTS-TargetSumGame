@@ -10,6 +10,7 @@ export interface IRandomNumber {
 
 export const RandomNumber: React.FC<IRandomNumber> = (props: IRandomNumber) => {
     const handlePress = () => {
+        if(props.isDisabled) return
         props.onPress(props.id)
     }
     return (

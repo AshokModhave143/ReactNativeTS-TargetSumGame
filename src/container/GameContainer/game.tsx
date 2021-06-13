@@ -8,7 +8,7 @@ export interface IGame {
 export const Game: React.FC<IGame> = (props: IGame) => {
     const [target, setTarget] = useState(0)
     const [inputs, setInputs] = useState([])
-    const [selectedNumbers, setSelectedNumbers] = useState([]) 
+    const [selectedNumbers, setSelectedNumbers] = useState<any>([]) 
 
     const generateRandomNumbers = () => {
         const randomNumbers: any = Array.from({ length: props.randomNumberCount })
@@ -25,10 +25,10 @@ export const Game: React.FC<IGame> = (props: IGame) => {
         generateRandomNumbers()
     }, [])
 
-    const isNumberSelected = (numberIndex): boolean => {
+    const isNumberSelected = (numberIndex: number): boolean => {
         return selectedNumbers.indexOf(numberIndex) >= 0
     }
-    const selectNumber = (numberIndex) => {
+    const selectNumber = (numberIndex: number) => {
         setSelectedNumbers([...selectedNumbers, numberIndex])
     }
 
