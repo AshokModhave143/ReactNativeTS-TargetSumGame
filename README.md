@@ -45,7 +45,7 @@ yarn run ios
 
 ## Snapshot
 
-![image](assets/images/GameScreen.png)
+![Game Screenshot](./assets/images/GameScreen.png)
 
 ## Roadmap
 
