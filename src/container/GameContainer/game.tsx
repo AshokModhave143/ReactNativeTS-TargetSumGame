@@ -2,11 +2,12 @@ import React, {useEffect, useLayoutEffect, useState} from 'react';
 import {View, Text, StyleSheet, Button, Alert} from 'react-native';
 import {RandomNumber} from './randomNumber';
 import {GameStatus as GameStatusComponent} from './gameStatus';
-import {useInterval} from '../../Helper/useIntervalHook';
+import shuffle from 'lodash.shuffle';
 
 export interface IGame {
   randomNumberCount: number;
   initialSeconds: number;
+  onPlayAgain: () => void;
 }
 export enum GameStatusEnum {
   PLAYING = 'PLAYING',
@@ -22,27 +23,36 @@ export const Game: React.FC<IGame> = (props: IGame) => {
   const [remainingSeconds, setRemainingSeconds] = useState(
     props.initialSeconds,
   );
-  const [intervalId, setIntervalId] = useState<any>(0);
+  const [intervalId, setIntervalId] = useState<any>(null);
 
   useEffect(() => {
     generateRandomNumbers();
+    startTimer();
   }, []);
   useEffect(() => {
     setGameStatus(calculateGameStatus());
   }, [selectedIds]);
+
   useEffect(() => {
-    // const timer = setInterval(() => {
-    //   setRemainingSeconds(prevCount => prevCount - 1);
-    // }, 1000);
-    // setIntervalId(timer);
-    // return () => clearInterval(timer);
-  }, []);
-  // useEffect(() => {
-  //   if (remainingSeconds === 0) clearInterval(intervalId);
-  // }, [remainingSeconds]);
+    if (remainingSeconds <= 0 || gameStatus !== GameStatusEnum.PLAYING) {
+      stopTimer();
+      setGameStatus(GameStatusEnum.LOST);
+    }
+  }, [remainingSeconds]);
+
+  const startTimer = () => {
+    const timer = setInterval(() => {
+      setRemainingSeconds(prevCount => prevCount - 1);
+    }, 1000);
+    setIntervalId(timer);
+  };
+  const stopTimer = () => {
+    clearInterval(intervalId);
+    setIntervalId(null);
+  };
 
   const generateRandomNumbers = () => {
-    const randomNumbers: any = Array.from({
+    let randomNumbers: any = Array.from({
       length: props.randomNumberCount,
     }).map(() => 1 + Math.floor(10 * Math.random()));
 
@@ -50,12 +60,17 @@ export const Game: React.FC<IGame> = (props: IGame) => {
       .slice(0, props.randomNumberCount - 2)
       .reduce((acc, curr) => acc + curr, 0);
 
-    // TODO: shuffle random numbers
-
     setGameStatus(calculateGameStatus());
     setTarget(randomTarget);
-    setInputs(randomNumbers);
+    setInputs(shuffle(randomNumbers));
+    resetValues();
+  };
+
+  const resetValues = () => {
     setSelectedIds([]);
+    setGameStatus(GameStatusEnum.PLAYING);
+    setRemainingSeconds(props.initialSeconds);
+    setIntervalId(null);
   };
 
   const isNumberSelected = (numberIndex: number): boolean => {
@@ -69,6 +84,7 @@ export const Game: React.FC<IGame> = (props: IGame) => {
     const sumSelected = selectedIds.reduce((acc, curr) => {
       return acc + inputs[curr];
     }, 0);
+    if (remainingSeconds === 0) return GameStatusEnum.LOST;
     if (sumSelected < target) return GameStatusEnum.PLAYING;
     if (sumSelected === target) return GameStatusEnum.WON;
     if (sumSelected > target) return GameStatusEnum.LOST;
@@ -79,8 +95,10 @@ export const Game: React.FC<IGame> = (props: IGame) => {
   return (
     <View style={styles.mainContainer}>
       <View style={styles.topPanel}>
-        <Button title={'Restart'} onPress={generateRandomNumbers} />
-        <Text>Interval: {remainingSeconds}</Text>
+        {gameStatus !== GameStatusEnum.PLAYING && (
+          <Button title={'Restart'} onPress={props.onPlayAgain} />
+        )}
+        <Text style={styles.randomCount}>Interval: {remainingSeconds}</Text>
         <Text style={styles.randomCount}>
           Random Count: {props.randomNumberCount}
         </Text>
