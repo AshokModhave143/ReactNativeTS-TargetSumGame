@@ -123,17 +123,17 @@ export const Game: React.FC<IGame> = (props: IGame) => {
             />
           ))}
       </View>
-      <GameStatusComponent status={gameStatus} />
+      <View style={styles.statusContainer}>
+        <GameStatusComponent status={gameStatus} />
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   mainContainer: {
-    flex: 1,
-    flexDirection: 'column',
-    flexWrap: 'nowrap',
-    justifyContent: 'space-evenly',
+    margin: 0,
+    padding: 0,
   },
   topPanel: {
     flex: 1,
@@ -146,8 +146,7 @@ const styles = StyleSheet.create({
     color: 'yellow',
   },
   resultContainer: {
-    flex: 1,
-    height: 100,
+    flex: 2,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -157,16 +156,21 @@ const styles = StyleSheet.create({
     fontSize: 40,
     color: 'blue',
     textAlign: 'center',
-    padding: 20,
+    padding: 10,
     borderRadius: 50,
   },
   inputContainer: {
-    flex: 1,
+    flex: 4,
+    width: '80%',
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
     alignItems: 'center',
     flexWrap: 'wrap',
-    margin: 30,
+    flexGrow: 2,
+    paddingVertical: 20,
+  },
+  statusContainer: {
+    flex: 1,
   },
   STATUS_PLAYING: {
     backgroundColor: '#bbb',

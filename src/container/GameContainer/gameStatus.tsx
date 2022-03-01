@@ -26,11 +26,14 @@ export const GameStatus: React.FC<IGameStatus> = (props: IGameStatus) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    height: '100%',
+    width: '100%',
+    paddingHorizontal: 20,
   },
   status: {
+    // paddingHorizontal: 20,
+    // paddingVertical: 10,
     paddingHorizontal: 20,
-    paddingVertical: 10,
     backgroundColor: 'yellow',
     fontSize: 18,
     fontStyle: 'italic',

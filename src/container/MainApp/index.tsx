@@ -10,7 +10,6 @@ export const MainApp: React.FC<IMainApp> = (props: IMainApp) => {
   return (
     <View style={styles.container}>
       <AppHeader {...props} />
-      {/* <OrderGroceryForm></OrderGroceryForm> */}
       <GameContainer />
     </View>
   );
