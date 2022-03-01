@@ -1,5 +1,5 @@
-import React, {useEffect, useLayoutEffect, useState} from 'react';
-import {View, Text, StyleSheet, Button, Alert} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Text, StyleSheet, Button} from 'react-native';
 import {RandomNumber} from './randomNumber';
 import {GameStatus as GameStatusComponent} from './gameStatus';
 import shuffle from 'lodash.shuffle';
@@ -36,8 +36,8 @@ export const Game: React.FC<IGame> = (props: IGame) => {
   useEffect(() => {
     if (remainingSeconds <= 0 || gameStatus !== GameStatusEnum.PLAYING) {
       stopTimer();
-      setGameStatus(GameStatusEnum.LOST);
     }
+    if (remainingSeconds <= 0) setGameStatus(GameStatusEnum.LOST);
   }, [remainingSeconds]);
 
   const startTimer = () => {
@@ -84,6 +84,7 @@ export const Game: React.FC<IGame> = (props: IGame) => {
     const sumSelected = selectedIds.reduce((acc, curr) => {
       return acc + inputs[curr];
     }, 0);
+
     if (remainingSeconds === 0) return GameStatusEnum.LOST;
     if (sumSelected < target) return GameStatusEnum.PLAYING;
     if (sumSelected === target) return GameStatusEnum.WON;

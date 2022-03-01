@@ -13,19 +13,12 @@ import {
   ScrollView,
   StatusBar,
   StyleSheet,
-  Text,
   useColorScheme,
   View,
 } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-import { MainApp } from '../MainApp'
+import {Colors} from 'react-native/Libraries/NewAppScreen';
+import {MainApp} from '../MainApp';
 
 const App: React.FC = () => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -42,10 +35,13 @@ const App: React.FC = () => {
           contentInsetAdjustmentBehavior="automatic"
           style={backgroundStyle}>
           <View
-            style={[styles.container, {
-              backgroundColor: isDarkMode ? Colors.black : Colors.white,
-            }]}>
-            <MainApp title={'Target Sum Game'}/>
+            style={[
+              styles.container,
+              {
+                backgroundColor: isDarkMode ? Colors.black : Colors.white,
+              },
+            ]}>
+            <MainApp title={'Target Sum Game'} />
           </View>
         </ScrollView>
       </View>
@@ -56,8 +52,8 @@ const App: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 0
-  }
+    paddingHorizontal: 0,
+  },
 });
 
 export default App;
